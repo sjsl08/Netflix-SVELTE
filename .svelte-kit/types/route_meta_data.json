@@ -1,0 +1,14 @@
+{
+	"/": [
+		"src/routes/+page.ts"
+	],
+	"/myList": [],
+	"/search": [],
+	"/test": [],
+	"/tvShows": [
+		"src/routes/tvShows/+page.ts"
+	],
+	"/watch/[id]": [
+		"src/routes/watch/[id]/+page.ts"
+	]
+}

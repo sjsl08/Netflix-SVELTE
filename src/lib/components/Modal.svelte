@@ -145,7 +145,7 @@
   <div class="overlay" on:click={handleCloseModal}>
     <!-- Modal Content -->
     <div
-      class={`modal-content w-[90%] md:w-[80%] lg:w-[70%] ${animationClass}`}
+      class={`modal-content w-[90%] md:w-[80%] lg:w-[50%] ${animationClass}`}
       on:click|stopPropagation
     >
       <!-- Close Button -->

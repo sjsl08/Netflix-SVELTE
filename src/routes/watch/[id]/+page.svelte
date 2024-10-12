@@ -28,6 +28,6 @@
     {#if trailer}
         <Player showControls={true} videoId={trailer.key} />
     {:else}
-        <p>Loading video...</p>
+        <p class="absolute top-28 left-12 w-full text-white">No Playback video...</p>
     {/if}
 </div>

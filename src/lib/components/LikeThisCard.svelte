@@ -29,7 +29,7 @@
   }
 </script>
 
-<div class="bg-[#181818] text-white rounded-lg shadow-md w-64">
+<div class="bg-[#181818] text-white  rounded-lg shadow-md w-52">
   <div class="relative">
     <img
       src={imageUrl}
