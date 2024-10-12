@@ -2,6 +2,7 @@
     import { page } from '$app/stores';
     import { getMovieTrailer } from '$lib/api/tmdb';
     import Player from '$lib/components/Player.svelte';
+    import { cardState } from '$lib/store/globalState';
 
     // Automatically subscribe to the 'page' store
     // and extract the 'id' parameter
@@ -12,6 +13,13 @@
 
     // Use a reactive statement with an async function
     $: if (videoId) {
+        
+  cardState.update((state) => ({
+    ...state,
+    isHovered: false,
+    item:null,
+    position:{x:-500,y:0}
+  }));
         (async () => {
             try {
                 trailer = await getMovieTrailer(videoId);
