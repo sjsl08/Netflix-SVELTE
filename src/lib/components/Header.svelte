@@ -163,12 +163,14 @@
 
     .search-container.active {
         width: 200px; /* Expanded width */
-        background-color: #374151; /* Slightly lighter background when active */
+        border: 1px solid white;
+        background-color: #000000; /* Slightly lighter background when active */
     }
 
     .search-input {
+        padding-left: 2rem;
         flex: 1;
-        padding: 0.5rem;
+        padding-block: 0.5rem;
         background: transparent;
         border: none;
         color: white;
@@ -182,6 +184,7 @@
     }
 
     .search-button {
+        position: absolute;
         padding: 0.5rem;
         cursor: pointer;
         display: flex;
@@ -253,7 +256,7 @@
 
 <header class={`fixed top-0 left-0 right-0 z-50 flex flex-col px-5 md:px-10 transition-all duration-300 ease-in-out ${isSticky ? 'bg-black shadow-lg' : whiteHeader ? 'text-white' : 'bg-gradient-to-b from-[rgba(0,0,0,0.7)] to-transparent'}`}>
     <!-- Main Header Content -->
-    <div class="flex justify-between items-center py-4">
+    <div class="flex justify-between items-center ">
         <div class="flex gap-x-6 md:gap-x-8 items-center">
             <a href="/">
                 <img src="https://cdn.prod.website-files.com/5ee732bebd9839b494ff27cd/5ee732bebd98393d75ff281d_580b57fcd9996e24bc43c529.png" alt="Netflix" class="w-28" />
@@ -308,7 +311,7 @@
     </div>
 
     <!-- Mobile Navigation Menu -->
-    <div id="mobile-menu" class={`mobile-menu relative ${isMenuOpen ? 'open' : ''} md:hidden`} on:click|stopPropagation>
+    <div id="mobile-menu" class={`mobile-menu relative ${isMenuOpen ? 'open' : ''} lg:hidden`} on:click|stopPropagation>
         <button  class="absolute right-4"
         on:click={toggleMenu}
         >

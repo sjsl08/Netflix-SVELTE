@@ -86,10 +86,12 @@
     {:else if searchResults.length === 0}
         <p>No results found for "{searchQuery}".</p>
     {:else}
-        <div class="search-header">
-        </div>
-        <div class="absolute w-full  pl-10 flex flex-col space-y-4">
-            <Carousel title={`Search Results For ${searchQuery}`} items={searchResults}/>
+
+        <div class="absolute  flex flex-wrap  left-12 flex gap-4">
+
+            {#each searchResults as item}
+    <Card {item}/>                
+            {/each}
         </div>  
         
     {/if}
