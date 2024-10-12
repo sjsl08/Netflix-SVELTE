@@ -10,17 +10,24 @@
 
   onMount(() => {
     if (browser) {
+      // Initialize movies from localStorage
       movies = JSON.parse(localStorage.getItem("list") || "[]");
       console.log(localStorage.getItem("list"));
-    }
-  });
 
-  favoriteListRefresh.subscribe(() => {
-    movies = JSON.parse(localStorage.getItem("list") || "[]");
+      // Subscribe to the store and update movies when it changes
+      const unsubscribe = favoriteListRefresh.subscribe(() => {
+        movies = JSON.parse(localStorage.getItem("list") || "[]");
+      });
+
+      // Clean up the subscription when the component is destroyed
+      return () => {
+        unsubscribe();
+      };
+    }
   });
 </script>
 
-<div class="absolute top-36 flex flex-wrap  left-12 flex gap-4">
+<div class="absolute top-36 flex flex-wrap left-12 gap-4">
   {#if movies.length > 0}
     {#each movies as item}
       <Card {item} />

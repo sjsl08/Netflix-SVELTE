@@ -29,7 +29,7 @@
   }
 </script>
 
-<div class="bg-[#181818] text-white  rounded-lg shadow-md w-52">
+<div class="bg-[#181818] text-white  rounded-lg shadow-md sm:w-44 w-52">
   <div class="relative">
     <img
       src={imageUrl}
@@ -69,18 +69,18 @@
             }}
             class="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
           >
-            <Play class="text-white h-6 w-6" />
+            <Play class="text-white h-4 w-4" />
           </button>
-          <button
+          <!-- <button
             on:click={handleAddToList}
             class="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
           >
             {#if added}
-              <Check class=" h-6 w-6" />
+              <Check class=" h-4 w-4" />
             {:else}
-              <Plus class="h-6 w-6" />
+              <Plus class="h-4 w-4" />
             {/if}
-          </button>
+          </button> -->
         </div>
       </div>
     </div>

@@ -188,7 +188,7 @@
   style="position: fixed; top: {y}px; left: {x < 200
     ? x + 60
     : window.innerWidth - x < 200
-      ? x - 120
+      ? x - 60
       : x}px; width: 350px; z-index: 1000; overflow:hidden;"
   on:mouseenter={handlePopoverMouseEnter}
   on:mouseleave={handlePopoverMouseLeave}

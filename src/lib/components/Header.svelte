@@ -264,11 +264,11 @@
             <!-- Desktop Navigation -->
             <nav class="hidden text-sm md:flex space-x-4">
                 <a href="/" class="hover:text-gray-300">Home</a>
-                <a href="/tvShows" class="hover:text-gray-300">TV Shows</a>
-                <a href="/movies" class="hover:text-gray-300">Movies</a>
-                <a href="/new-popular" class="hover:text-gray-300">New & Popular</a>
+                <a class="hover:text-gray-300">TV Shows</a>
+                <a  class="hover:text-gray-300">Movies</a>
+                <a  class="hover:text-gray-300">New & Popular</a>
                 <a href="/myList" class="hover:text-gray-300">My List</a>
-                <a href="/languages" class="hover:text-gray-300">Browse by Languages</a>
+                <a  class="hover:text-gray-300">Browse by Languages</a>
             </nav>
         </div>
         <div class="flex items-center space-x-4">

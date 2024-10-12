@@ -93,7 +93,7 @@
   <div
     on:mouseleave={handleUnhover}
     on:mouseenter={handleHover}
-    class="card pointer-events-auto relative"
+    class="card pointer-events-auto relative sm:w-56 w-36"
   >
     <!-- Movie Image -->
     <img
@@ -107,7 +107,6 @@
 <style>
   .card {
     cursor: pointer;
-    width: 225px;
     color: white;
     opacity: 1;
     position: relative; /* Ensure positioning context for info-section */
