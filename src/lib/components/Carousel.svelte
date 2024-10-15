@@ -1,17 +1,18 @@
 <script lang="ts">
   import { ChevronLeft, ChevronRight } from "lucide-svelte";
   import Card from "./Card.svelte";
+  import type { Movie } from "$lib/types/tmdb";
   
   // Define props with types
   export let title: string = "";
-  export let items: { id: number; title: string; poster_path: string }[] = [];
+  export let items: Movie[] = [];
   export let scrollAmount: number = 320;
   
   let carouselContainer: HTMLDivElement | null = null;
   let scrollPosition: number = 0;
   
   // Function to scroll left
-  function scrollLeft() {
+  const scrollLeft=()=> {
     if (carouselContainer) {
       scrollPosition = Math.max(0, scrollPosition - scrollAmount);
       carouselContainer.scrollTo({
@@ -22,7 +23,7 @@
   }
   
   // Function to scroll right
-  function scrollRight() {
+  const scrollRight=()=> {
     if (carouselContainer) {
       scrollPosition += scrollAmount;
       carouselContainer.scrollTo({
@@ -33,7 +34,7 @@
   }
   
   // Update scrollPosition on manual scroll
-  function handleScroll() {
+  const handleScroll=()=> {
     if (carouselContainer) {
       scrollPosition = carouselContainer.scrollLeft;
     }

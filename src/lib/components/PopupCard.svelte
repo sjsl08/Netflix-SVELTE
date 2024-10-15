@@ -3,21 +3,17 @@
   import { ChevronDown, Play, Plus, Check, ThumbsUp } from "lucide-svelte";
   import { cardState, openModal } from "$lib/store/globalState";
   import { getMovieTrailer } from "$lib/api/tmdb";
-  import YouTubePlayer from "./YouTubePlayer.svelte";
-  import { get } from "svelte/store";
   import { browser } from "$app/environment";
   import { Volume2, VolumeOff } from "lucide-svelte";
-  import { addToList, getList } from "$lib/utils/helpers";
+  import { addToList, handleNoImageError } from "$lib/utils/helpers";
   import Player from "./Player.svelte";
   import { goto } from "$app/navigation";
-  import fallbackImage from "../../public/images/404.jpg";
+  import type { Movie } from "$lib/types/tmdb";
+  import { get } from "svelte/store";
 
   export let x: number = 0;
   export let y: number = 0;
-  export let dimensions: { width: number; height: number } = {
-    width: 0,
-    height: 0,
-  };
+
   export let isHovered: boolean = false; // External hover state
 
   let isPopoverHovered: boolean = false; // Internal hover state
@@ -25,10 +21,10 @@
   let trailerUrl: string = "";
   let imageUrl: string = "";
   let title: string = "";
-  let favData;
-  let allList;
+  let favData: Movie;
+  let allList: Movie[];
   let added = false;
-  let movieID: string = "";
+  let movieID: string | number = "";
 
   // Determine whether to show the popover
   $: showPopover = isHovered || isPopoverHovered;
@@ -46,10 +42,9 @@
 
       allList = JSON.parse(localStorage.getItem("list")!);
 
-    added =  allList?.some((item)=>{
-       return item.id === movieID
-        
-      })
+      added = allList?.some((item) => {
+        return item.id === movieID;
+      });
 
       console.log(added);
 
@@ -59,15 +54,8 @@
     }
   });
 
-  function handleError(event: Event) {
-    const img = event.target as HTMLImageElement;
-    if (img.src !== fallbackImage) {
-      img.src = fallbackImage;
-    }
-  }
-
   // Function to fetch the trailer
-  async function fetchTrailer(movieId: number) {
+  async function fetchTrailer(movieId: number | string) {
     console.log(x, window.innerWidth);
 
     try {
@@ -89,8 +77,8 @@
   onMount(() => {
     if (browser) {
       // Initial fetch if item exists
-      if (cardState && cardState.item?.id) {
-        fetchTrailer(cardState.item.id);
+      if (cardState && get(cardState).item) {
+        fetchTrailer(get(cardState).item.id);
       }
 
       // Subscribe to changes in cardState
@@ -105,9 +93,6 @@
       // Add scroll listener to hide popover on scroll
       window.addEventListener("scroll", handleScroll);
       allList = [];
-
-      
-      
     }
   });
 
@@ -121,35 +106,35 @@
   });
 
   // Handle mouse enter on popover container
-  function handlePopoverMouseEnter() {
+  const handlePopoverMouseEnter = () => {
     isPopoverHovered = true;
-  }
+  };
 
   // Handle mouse leave on popover container
-  function handlePopoverMouseLeave() {
+  const handlePopoverMouseLeave = () => {
     isPopoverHovered = false;
     showTrailer = false; // Reset trailer state on mouse leave
-  }
+  };
 
   // Handle mouse enter on image to show trailer
-  function handleImageMouseEnter() {
+  const handleImageMouseEnter = () => {
     showTrailer = !showTrailer;
-  }
-  function handleImageMouseEnterAction() {
+  };
+  const handleImageMouseEnterAction = () => {
     showTrailer = false;
-  }
+  };
 
   // Handle mouse leave on image to show image again
-  function handleImageMouseLeave() {
+  const handleImageMouseLeave = () => {
     showTrailer = false;
-  }
+  };
 
   // Handle scroll event to hide popover
-  function handleScroll() {
+  const handleScroll = () => {
     isHovered = false;
     isPopoverHovered = false;
     showTrailer = false;
-  }
+  };
 
   let player;
   let muted = true;
@@ -157,27 +142,25 @@
   // Debugging
   // $: console.log('isHovered:', isHovered, 'isPopoverHovered:', isPopoverHovered, 'showPopover:', showPopover, 'showTrailer:', showTrailer);
 
-  function muteVideo() {
+  const muteVideo = () => {
     if (player) {
       player.mute();
     }
-  }
+  };
 
-  function unmuteVideo() {
+  const unmuteVideo = () => {
     if (player) {
       player.unmute();
     }
-  }
+  };
 
-  function toggleMuteVideo() {
-    console.log("gsdsf");
-    
+  const toggleMuteVideo = () => {
     if (player) {
       muted = !muted;
 
       player.toggleMute();
     }
-  }
+  };
 </script>
 
 <!-- PopupCard Container -->
@@ -199,9 +182,10 @@
       <p class="absolute text-ellipsis z-50 top-36 left-2 font-light text-xl">
         {title}
       </p>
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
       <span
         on:click={toggleMuteVideo}
-        class="absolute cursor-pointer z-50 transition-colors duration-200 top-36 right-4 p-3 border-2 border-2 border-gray-700 hover:border-white rounded-full"
+        class="absolute cursor-pointer z-50 transition-colors duration-200 top-36 right-4 p-3 border-2 border-gray-700 hover:border-white rounded-full"
       >
         {#if !muted}
           <Volume2 />
@@ -212,12 +196,12 @@
     </div>
     {#if trailerUrl && showPopover && showTrailer}
       <div class="pointer-events-none">
-        <Player bind:this={player} mute={muted} videoId={trailerUrl} />
+        <Player bind:this={player} isMuted={muted} videoId={trailerUrl} />
       </div>
       <!-- <YouTubePlayer bind:this={player} height={200} url={trailerUrl} /> -->
     {:else if imageUrl && showPopover}
       <img
-        on:error={handleError}
+        on:error={handleNoImageError}
         on:mouseenter={handleImageMouseEnter}
         src={imageUrl}
         alt="Poster"
@@ -241,25 +225,27 @@
   >
     <div class="flex space-x-2">
       <button
-        on:click={goto(`/watch/${movieID}`)}
+        on:click={() => {
+          goto(`/watch/${movieID}`);
+        }}
         class="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
       >
         <Play class="text-white h-6 w-6" />
       </button>
       <button
-      on:click={ () =>{
-        added = !added
-        addToList(favData)}}
-      class="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
-      aria-label="Add to List"
+        on:click={() => {
+          added = !added;
+          addToList(favData);
+        }}
+        class="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
+        aria-label="Add to List"
       >
-      {#if added}
-      <Check class="text-white h-6 w-6" />
-      {:else}
-      <Plus class="text-white h-6 w-6" />
-      {/if}
-
-        </button>
+        {#if added}
+          <Check class="text-white h-6 w-6" />
+        {:else}
+          <Plus class="text-white h-6 w-6" />
+        {/if}
+      </button>
       <button
         class="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
       >

@@ -15,7 +15,7 @@
   const dispatch = createEventDispatcher();
 
   // Function to toggle mute state
-  export function toggleMute() {
+  export const toggleMute=()=> {
     if (player) {
       if (player.muted) {
         player.muted = false;
@@ -32,29 +32,29 @@
   }
 
   // Function to mute the video
-  export function mute() {
+  export const mute = () => {
     if (player && !player.muted) {
       player.muted = true;
       isMuted = true;
       console.log("Video muted");
       dispatch("mute");
     }
-  }
+  };
 
   // Function to unmute the video
-  export function unmute() {
+  export const unmute = () => {
     if (player && player.muted) {
       player.muted = false;
       isMuted = false;
       console.log("Video unmuted");
       dispatch("unmute");
     }
-  }
+  };
 
   // Function to get current mute state
-  export function getIsMuted() {
+  export const getIsMuted = () => {
     return isMuted;
-  }
+  };
 
   onMount(() => {
     if (typeof window !== "undefined") {
@@ -91,12 +91,12 @@
       });
 
       // Listen for the Plyr 'ready' event
-      player.on('ready', () => {
-      console.log('Plyr is ready. Autoplay will start in 500ms.');
-      setTimeout(() => {
-        player.play();
-      }, 500);
-    });
+      player.on("ready", () => {
+        console.log("Plyr is ready. Autoplay will start in 500ms.");
+        setTimeout(() => {
+          player.play();
+        }, 500);
+      });
 
       // Handle Plyr errors
       player.on("error", (error) => {
@@ -132,8 +132,12 @@
 </script>
 
 <!-- Video Player Wrapper -->
-<div class={`${showControls ? 'h-[100vh] flex justify-center items-center' : 'h-full'}  relative bg-black overflow-hidden shadow-lg`}>
-  <div class={`flex justify-center aspect-video ${showControls ? "h-[100vh] w-[90%]" : "scale-[1.4]"}`}>
+<div
+  class={`${showControls ? "h-[100vh] flex justify-center items-center" : "h-full"}  relative bg-black overflow-hidden shadow-lg`}
+>
+  <div
+    class={`flex justify-center aspect-video ${showControls ? "h-[100vh] w-[90%]" : "scale-[1.4]"}`}
+  >
     <div
       bind:this={playerElement}
       data-plyr-provider="youtube"

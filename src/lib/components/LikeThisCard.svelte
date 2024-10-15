@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
   import { closeModal } from "$lib/store/globalState";
   import type { Movie } from "$lib/utils/helpers";
-  import { addToList } from "$lib/utils/helpers";
+  import { addToList, handleNoImageError } from "$lib/utils/helpers";
   import { Check, Plus, Play } from "lucide-svelte";
 
   export let id = "";
@@ -16,8 +16,8 @@
   export let imageUrl = "path/to/your/image.jpg";
   let added = false;
 
-  const handleAddToList=()=> {
-    let data : Movie= {
+  const handleAddToList = () => {
+    let data: Movie = {
       id,
       poster_path: imageUrl,
       title,
@@ -26,12 +26,13 @@
 
     addToList(data);
     added = !added;
-  }
+  };
 </script>
 
-<div class="bg-[#181818] text-white  rounded-lg shadow-md sm:w-44 w-52">
+<div class="bg-[#181818] text-white rounded-lg shadow-md sm:w-44 w-52">
   <div class="relative">
     <img
+      on:error={handleNoImageError}
       src={imageUrl}
       alt={title}
       class="rounded-t-lg w-full h-40 object-cover"
@@ -71,16 +72,6 @@
           >
             <Play class="text-white h-4 w-4" />
           </button>
-          <!-- <button
-            on:click={handleAddToList}
-            class="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
-          >
-            {#if added}
-              <Check class=" h-4 w-4" />
-            {:else}
-              <Plus class="h-4 w-4" />
-            {/if}
-          </button> -->
         </div>
       </div>
     </div>
@@ -88,7 +79,3 @@
     <p class="text-xs text-[#b3b3b3] mb-3 leading-tight">{description}</p>
   </div>
 </div>
-
-<style>
-  /* Add any additional styles if needed */
-</style>

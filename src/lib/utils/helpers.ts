@@ -1,13 +1,10 @@
 import { cardState, favoriteListRefresh } from "$lib/store/globalState";
 import { get } from "svelte/store";
+import fallbackImage from "../../public/images/404.jpg"
+import type { Movie } from "$lib/types/tmdb";
 
 // Define a TypeScript interface for the movie object
-export interface Movie {
-  id: string;
-  title: string;
-  image: string;
-  poster_path: string;
-}
+
 
 export const addToList = (movie: Movie) => {
   console.log("Adding movie to list:", movie);
@@ -63,21 +60,19 @@ export const addToList = (movie: Movie) => {
   }
 };
 
-export const getList = () => {
-  // const list = localStorage.getItem("list");
-  // if (list) {
-  //   try {
-  //     return JSON.parse(list);
-  //   } catch (error) {
-  //     console.error("Error parsing the movie list from localStorage:", error);
-  //     return [];
-  //   }
-  // }
-  // return [];
-};
+
 
 export function convertMinutesToTime(minutes: number) {
   const hours = Math.floor(minutes / 60); // Calculate whole hours
   const mins = minutes % 60; // Calculate remaining minutes
   return hours === 0 ? `${mins}m` : `${hours}h ${mins}m`;
+}
+
+
+
+export const handleNoImageError = (event: Event)=> {
+  const img = event.target as HTMLImageElement;
+  if (img.src !== fallbackImage) {
+    img.src = fallbackImage;
+  }
 }

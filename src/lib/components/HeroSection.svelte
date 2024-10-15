@@ -3,8 +3,7 @@
   import { onMount, onDestroy } from "svelte";
   import { Play, Info, Volume2, VolumeOff } from "lucide-svelte";
   import {
-    popularShows,
-    popularTVShows,
+    popularShows
   } from "$lib/store/globalState";
   import { page } from "$app/stores";
   import Player from "./Player.svelte";

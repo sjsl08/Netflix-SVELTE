@@ -3,10 +3,10 @@
   import { onMount } from "svelte";
   import Card from "$lib/components/Card.svelte";
   import { browser } from "$app/environment";
-  import Carousel from "$lib/components/Carousel.svelte";
   import { favoriteListRefresh } from "$lib/store/globalState";
+  import type { Movie } from "$lib/types/tmdb";
 
-  let movies: any[] = [];
+  let movies: Movie[] = [];
 
   onMount(() => {
     if (browser) {

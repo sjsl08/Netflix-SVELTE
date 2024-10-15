@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Play, Plus, ThumbsUp, ChevronRight } from "lucide-svelte";
   import { cardState } from "$lib/store/globalState";
   import { onDestroy } from "svelte";
 
-  import fallbackImage from "../../public/images/404.jpg";
-  export let item: { id: number; title: string; poster_path: string };
+  import type { Movie } from "$lib/types/tmdb";
+  import { handleNoImageError } from "$lib/utils/helpers";
+  export let item: Movie;
 
   // Timeout identifier for debounce
   let hoverTimeout: number | undefined;
@@ -79,12 +79,6 @@
     }
   });
 
-  function handleError(event: Event) {
-    const img = event.target as HTMLImageElement;
-    if (img.src !== fallbackImage) {
-      img.src = fallbackImage;
-    }
-  }
 </script>
 
 <!-- Main Card Container -->
@@ -97,7 +91,7 @@
   >
     <!-- Movie Image -->
     <img
-      on:error={handleError}
+      on:error={handleNoImageError}
       src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}
       alt={item.title}
     />

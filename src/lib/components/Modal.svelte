@@ -15,6 +15,7 @@
   import LikeThisCard from "./LikeThisCard.svelte";
   import { getSimilarMovies } from "$lib/api/tmdb";
   import { goto } from "$app/navigation";
+  import type { MovieDetails } from "$lib/types/tmdb";
 
   // Define TypeScript Interfaces
   interface Genre {
@@ -27,22 +28,11 @@
     name: string;
   }
 
-  interface MovieData {
-    original_title?: string;
-    genres: Genre[];
-    spoken_languages: SpokenLanguage[];
-    adult?: boolean;
-    runtime?: number;
-    overview?: string;
-    id: number;
-    // Add other relevant fields as needed
-  }
-
-  let isOpen :boolean= false;
+  let isOpen: boolean = false;
   let videoId = "";
   let shouldRender = false;
   let animationClass = "";
-  let movieData: MovieData = { genres: [], spoken_languages: [] }; // Initialize with empty arrays
+  let movieData: MovieDetails;
   let player: Player | null = null;
   let muted = false;
   let similarMovies = [];
@@ -114,28 +104,19 @@
   }
 
   function handleAddToList() {
-    // if (added) {
-    //   allList = allList.filter((item) => {
-    //     return item.id != movieData.id;
-    //   });
-    //   console.log(allList);
 
-    //   localStorage.setItem("list", JSON.stringify(allList));
-    //   added = false;
-    //   return;
-    // } else {
-      console.log(movieData);
-      let { id, poster_path, title, backdrop_path } = movieData;
+    console.log(movieData);
+    let { id, poster_path, title, backdrop_path } = movieData;
 
-      let data = {
-        id,
-        poster_path: backdrop_path,
-        title,
-        image: `https://image.tmdb.org/t/p/w500${backdrop_path}`,
-      };
+    let data = {
+      id,
+      poster_path: backdrop_path,
+      title,
+      image: `https://image.tmdb.org/t/p/w500${backdrop_path}`,
+    };
 
-      addToList(data);
-      added = !added;
+    addToList(data);
+    added = !added;
     // }
   }
 </script>
@@ -265,9 +246,11 @@
             <p>{movieData.overview}</p>
           </div>
 
-          <div >
+          <div>
             <h1 class="text-2xl my-4 font-bold">More Like This</h1>
-            <div class="flex flex-wrap sm:justify-between justify-center gap-x-4  gap-y-8">
+            <div
+              class="flex flex-wrap sm:justify-between justify-center gap-x-4 gap-y-8"
+            >
               {#each similarMovies.splice(0, 12) as item}
                 <LikeThisCard
                   id={item.id}
