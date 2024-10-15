@@ -1,9 +1,4 @@
-<!-- src/routes/+error.svelte -->
-<script lang="ts">
-    export let error: Error | undefined;
-    export let status: number;
-  </script>
-  
+
   <div class="min-h-screen flex flex-col items-center justify-center  p-4">
       <div class="text-center">
         <h1 class="text-6xl font-bold text-red-500 dark:text-red-400">404</h1>
